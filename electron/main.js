@@ -78,6 +78,8 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
+      /* 영구 캐시 비활성화: 입새함 맄 항상 최신 웹 콘텐츠를 로드하기 위해 인메모리 전용 세션 사용 */
+      partition: "nopersist",
     },
 
     icon: path.join(__dirname, "../public/icons/icon.ico"),
@@ -85,19 +87,15 @@ function createWindow() {
     title: "FlowTool",
   });
 
-  /* ── URL 로드 ────────────────────────────────────────────────────
-   *   개발 모드: localhost:3001 서버가 실행 중이면 사용 (npm run dev)
-   *   일반 모드: flowtool.vercel.app (항상 최신 배포판)
-   *
-   *   캐시 초기화: 앱 실행 시마다 Electron Chromium 캐시를 지워서
-   *   구버전 캐시가 보이는 문제를 방지한다.
+  /* ── URL 로드 ────────────────────────────────────────────────
+   *   partition: nopersist 로 영구 캐시가 없으므로 clearCache 불필요.
+   *   개발 모드: localhost:3001 서버가 실행 중이면 사용
+   *   일반 모드: flowtool.vercel.app (타임스탬프 스트링으로 CDN 캐시 도 무력화)
    */
-  mainWindow.webContents.session.clearCache().then(() => {
-    /* 캐시 클리어 후 URL 로드 */
-    mainWindow.loadURL("http://localhost:3001").catch(() => {
-      /* dev 서버 없음 → Vercel 배포판으로 자동 전환 */
-      mainWindow.loadURL("https://flowtool.vercel.app");
-    });
+  const vercelUrl = `https://flowtool.vercel.app?t=${Date.now()}`;
+  mainWindow.loadURL("http://localhost:3001").catch(() => {
+    /* dev 서버 없음 → Vercel 배포판으로 자동 전환 */
+    mainWindow.loadURL(vercelUrl);
   });
 
   /* ── 창 위치/크기 자동 저장 ──────────────────────────────────── */
