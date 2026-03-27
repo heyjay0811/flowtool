@@ -84,9 +84,7 @@ export default function WizardPanel({
   onCreateCategory, onDeleteCategory, onRenameCategory,
   onRenameFlow,
 }: WizardPanelProps) {
-  /** 현재 활성 탭: 흐름도 트리 or 키보드 빠른입력 */
-  const [activeTab, setActiveTab] = useState<"tree" | "quick">("tree");
-  /* ── 접힌 프로젝트/카테고리 트래킹 ────────────────────────────── */
+  /* ── 접힌 프로젝트/카테고리 트래킹 ────────────────────── */
   const [collapsedProjects, setCollapsedProjects] = useState<Set<string>>(new Set());
   const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
 
@@ -117,44 +115,15 @@ export default function WizardPanel({
   return (
     <div className={styles.panel}>
 
-      {/* ── 탭 전환 버튼 ─────────────────────────────────────────── */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 2 }}>
-        <button
-          onClick={() => setActiveTab("tree")}
-          style={{
-            flex: 1, padding: "6px 0", fontSize: 11, fontWeight: 700,
-            borderRadius: 8, border: "1px solid var(--border)",
-            background: activeTab === "tree" ? "var(--accent)" : "var(--bg-surface)",
-            color: activeTab === "tree" ? "#fff" : "var(--text-secondary)",
-            cursor: "pointer", transition: "all 0.15s",
-          }}
-        >📁 흐름도</button>
-        <button
-          onClick={() => setActiveTab("quick")}
-          style={{
-            flex: 1, padding: "6px 0", fontSize: 11, fontWeight: 700,
-            borderRadius: 8, border: "1px solid var(--border)",
-            background: activeTab === "quick" ? "var(--accent)" : "var(--bg-surface)",
-            color: activeTab === "quick" ? "#fff" : "var(--text-secondary)",
-            cursor: "pointer", transition: "all 0.15s",
-          }}
-        >⌨ 빠른입력</button>
+      {/* ── 키보드 빠른 입력 ────────────────────────────── */}
+      <div className={styles.section}>
+        <p className={styles.sectionTitle}>⌨ 빠른 입력</p>
+        <QuickBuilder
+          nodes={nodes}
+          onAddNodes={onAddNodes}
+          onDeleteNode={onDeleteNode}
+        />
       </div>
-
-      {/* ── 빠른입력 탭 ──────────────────────────────────────────── */}
-      {activeTab === "quick" && (
-        <div className={styles.section}>
-          <p className={styles.sectionTitle}>⌨ 키보드 빠른 입력</p>
-          <QuickBuilder
-            nodes={nodes}
-            onAddNodes={onAddNodes}
-            onDeleteNode={onDeleteNode}
-          />
-        </div>
-      )}
-
-      {/* ── 흐름도 탭 ────────────────────────────────────────────── */}
-      {activeTab === "tree" && <>
 
       {/* ── 검색창 ───────────────────────────────────────────────── */}
       <div className={styles.searchBox}>
@@ -405,15 +374,13 @@ export default function WizardPanel({
         </div>
       </div>
 
-      {/* ── 4. 사용 가이드 ───────────────────────────────────────── */}
+      {/* ── 4. 사용 가이드 ──────────────────────────────────────────── */}
       <div className={styles.guide}>
         <p>💡 <strong>더블클릭</strong>: 텍스트/이름 편집</p>
         <p>💡 <strong>핸들 드래그</strong>: 연결선</p>
         <p>💡 <strong>⊙ 버튼</strong>: 연결점 추가</p>
         <p>💡 <strong>Delete</strong>: 삭제</p>
       </div>
-
-      </> /* activeTab === "tree" 섹션 끝 */}
 
     </div>
   );
