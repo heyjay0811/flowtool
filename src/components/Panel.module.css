@@ -449,3 +449,37 @@
   padding: 1px 4px;
   color: var(--text-secondary);
 }
+
+/* 가이드 제목 */
+.qbGuideTitle {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-hint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+/* 가이드 한 줄: kbd + 설명 */
+.qbGuideRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+.qbGuideRow kbd {
+  font-family: inherit;
+  font-size: 10px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 6px;
+  color: var(--text-secondary);
+  min-width: 42px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.qbGuideRow span {
+  font-size: 11px;
+  color: var(--text-hint);
+}

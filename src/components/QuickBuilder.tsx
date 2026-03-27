@@ -213,13 +213,24 @@ export default function QuickBuilder({ nodes, onAddNodes, onDeleteNode }: QuickB
         />
       </div>
 
-      {/* 단축키 가이드 */}
+      {/* 단축키 가이드 — 세로 표 형식 */}
       <div className={styles.qbGuide}>
-        <span><kbd>Enter</kbd> 추가</span>
-        <span><kbd>Space</kbd> {TYPE_META[pendingType].icon}→{TYPE_META[nextType].icon}</span>
-        <span><kbd>Tab</kbd> Yes↔No</span>
-        <span><kbd>⌫</kbd> 되돌리기</span>
-        <span><kbd>Esc</kbd> 초기화</span>
+        <div className={styles.qbGuideTitle}>키 조작</div>
+        <div className={styles.qbGuideRow}>
+          <kbd>Enter</kbd><span>노드 추가 (텍스트 입력 후)</span>
+        </div>
+        <div className={styles.qbGuideRow}>
+          <kbd>Space</kbd><span>타입 전환 ■→◆→● (빈칸에서)</span>
+        </div>
+        <div className={styles.qbGuideRow}>
+          <kbd>Tab</kbd><span>Yes ↔ No 전환 (분기 후)</span>
+        </div>
+        <div className={styles.qbGuideRow}>
+          <kbd>⌫</kbd><span>마지막 노드 삭제 (빈칸에서)</span>
+        </div>
+        <div className={styles.qbGuideRow}>
+          <kbd>Esc</kbd><span>커서 초기화 (처음부터)</span>
+        </div>
       </div>
     </div>
   );
