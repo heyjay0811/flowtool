@@ -85,11 +85,18 @@ function createWindow() {
     title: "FlowTool",
   });
 
-  /* ── URL 로드 ──────────────────────────────────────────────────── */
+  /* ── URL 로드 (3단계 우선순위) ─────────────────────────────────
+   *   1순위: out/index.html 존재 → 로컬 정적 빌드
+   *   2순위: localhost:3001 응답 → 개발 서버
+   *   3순위: flowtool.vercel.app → 웹 배포판 (서버 없을 때 fallback)
+   */
   if (isStaticBuild) {
     mainWindow.loadFile(outIndexPath);
   } else {
-    mainWindow.loadURL("http://localhost:3001");
+    /* localhost:3001 접속 시도 후 실패하면 Vercel URL로 전환 */
+    mainWindow.loadURL("http://localhost:3001").catch(() => {
+      mainWindow.loadURL("https://flowtool.vercel.app");
+    });
   }
 
   /* ── 창 위치/크기 자동 저장 ──────────────────────────────────── */
