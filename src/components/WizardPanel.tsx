@@ -432,6 +432,20 @@ export default function WizardPanel({
           title="전체 데이터를 JSON으로 내보내기">💾 내보내기</button>
       </div>
 
+      {/* ── 전체 초기화 ──────────────────────────────────────────── */}
+      <button
+        className={styles.clearBtn}
+        onClick={() => {
+          if (!confirm("⚠️ 모든 흐름도 데이터를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
+          localStorage.removeItem("flowtool_projects");
+          localStorage.removeItem("flowtool_categories");
+          localStorage.removeItem("flowtool_flows");
+          localStorage.removeItem("flowtool_active");
+          window.location.reload();
+        }}
+        title="전체 데이터 초기화 (되돌릴 수 없음)"
+      >🗑 전체 초기화</button>
+
     </div>
   );
 }

@@ -512,3 +512,18 @@
   color: var(--text-hint);
 }
 .exportBtn:hover { background: var(--bg-hover); }
+
+/* 전체 초기화 버튼 */
+.clearBtn {
+  margin: 4px 12px 8px;
+  width: calc(100% - 24px);
+  padding: 7px 0;
+  border: 1px solid #7f1d1d;
+  border-radius: 6px;
+  background: #1a0a0a;
+  color: #f87171;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.clearBtn:hover { background: #3b0a0a; }
