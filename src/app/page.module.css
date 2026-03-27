@@ -1,142 +1,274 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
+/* page.module.css — 메인 페이지 레이아웃 */
 
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
+/* ── 앱 전체 레이아웃 ─────────────────────────────────────────────── */
+.app {
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  flex-direction: column;   /* TitleBar(상단) + 본문(하단) 세로 배치 */
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg-app);
 }
 
-.main {
+/* TitleBar 아래 본문 영역 (사이드패널 + 캔버스 가로 배치) */
+.app > aside,
+.app > main {
   display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
-
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
-
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
+/* content: TitleBar 아래 사이드패널+캔버스를 가로로 배치 */
+.content {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
-.ctas a {
+/* ── 사이드패널 ────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--panel-width);
+  min-width: 170px;
+  max-width: 240px;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
+/* 사이드바 헤더 */
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.appIcon {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.appTitle {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* 압정 버튼 (Electron 전용) */
+.pinBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-secondary);
+}
+.pinBtn:hover { background: var(--bg-hover); border-color: var(--accent); }
+.pinActive {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.newBtn {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.newBtn:hover { background: var(--accent); color: #fff; }
+
+/* 패널 스크롤 영역 */
+.panelContent {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── 메인 캔버스 영역 ─────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 상단 제목 바 */
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 44px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.titleBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 4px 8px;
+  transition: background 0.15s;
+}
+.titleBtn:hover { background: var(--bg-hover); }
+
+.titleEditIcon {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.titleInput {
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-focus);
+  border-radius: 6px;
+  padding: 4px 10px;
+  color: var(--text-primary);
+  width: 200px;
+}
+
+.nodeCount {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-hint);
+}
+
+/* 캔버스 영역 */
+.canvasArea {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── 하단 툴바 ────────────────────────────────────────────────────── */
+.toolbar {
+  height: var(--toolbar-height);
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Antigravity 전달 버튼 (핵심 CTA) */
+.sendBtn {
+  background: linear-gradient(135deg, #5b6af0, #7c3aed);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.15s;
+  box-shadow: 0 2px 12px rgba(91, 106, 240, 0.4);
+  letter-spacing: -0.01em;
+}
+.sendBtn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.sendBtn:active { transform: translateY(0); }
+
+.toolbarRight {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.toolbarBtn {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 7px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.toolbarBtn:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* ── 토스트 알림 ──────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: calc(var(--toolbar-height) + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  animation: toastIn 0.2s ease, toastOut 0.2s ease 1.6s forwards;
+  white-space: nowrap;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+/* ── 반응형 (모바일) ──────────────────────────────────────────────── */
+@media (max-width: 300px) {
+  /* 모바일: 사이드바를 하단으로 */
+  .app {
+    flex-direction: column;
   }
-
-  .intro {
-    gap: 16px;
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    overflow-x: auto;
   }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
+  .sidebarHeader {
+    flex-shrink: 0;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
   }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .panelContent {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 }

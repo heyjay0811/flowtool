@@ -1,0 +1,84 @@
+/* TitleBar.module.css — Electron 커스텀 타이틀바 스타일 */
+
+/* 타이틀바 전체 */
+.bar {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  background: #0d0f18;           /* 앱 배경보다 살짝 어두운 색 */
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 100;
+  /* Electron에서 타이틀바 영역 드래그 허용 */
+  -webkit-app-region: no-drag;  /* 버튼 영역은 드래그 안됨 */
+}
+
+/* 접힌 상태: 타이틀바만 보이게 */
+.collapsed {}
+
+/* 드래그 가능 영역 (앱 이름 + 아이콘) */
+.drag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  height: 100%;
+  cursor: move;
+  /* 이 영역은 드래그로 창 이동 가능 */
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.appIcon {
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.appTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* 컨트롤 버튼 영역 */
+.controls {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+
+/* 공통 버튼 */
+.btn {
+  width: 38px;
+  height: 42px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* 활성 상태 버튼 (압정이 고정된 경우) */
+.btnActive {
+  color: var(--accent) !important;
+  background: var(--accent-light);
+}
+
+/* 닫기 버튼 */
+.btnClose:hover {
+  background: #ef4444;
+  color: #fff;
+}

@@ -2,12 +2,41 @@
   "name": "flow-tool",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3001 && electron .\"",
+    "electron:build": "cross-env NEXT_STATIC_EXPORT=true next build && electron-builder --win"
+  },
+  "build": {
+    "appId": "com.flowtool.app",
+    "productName": "FlowTool",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "out/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/icons/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FlowTool"
+    }
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.100.1",
+    "@xyflow/react": "^12.10.1",
+    "html-to-image": "^1.11.13",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -16,6 +45,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5"
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^41.0.4",
+    "electron-builder": "^26.8.1",
+    "typescript": "^5",
+    "wait-on": "^9.0.4"
   }
 }
