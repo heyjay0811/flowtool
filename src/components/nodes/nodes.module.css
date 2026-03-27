@@ -9,8 +9,8 @@
   align-items: center;
   justify-content: center;
   padding: 10px 16px;
-  min-width: 160px;         /* 기본 노드 충분한 폭 */
-  max-width: 280px;         /* 긴 텍스트도 다 표시 */
+  min-width: 160px;
+  max-width: 340px;         /* 긴 텍스트도 다 표시 */
   min-height: 48px;
   border-radius: 8px;
   border: 2px solid transparent;
@@ -88,10 +88,10 @@
 /* ── 원형 노드 ────────────────────────────────────────────────────── */
 .circle {
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  min-width: 100px;
-  min-height: 100px;
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  min-height: 120px;
   padding: 8px;
 }
 
@@ -103,13 +103,13 @@
    * → Position.Left  = 시각적 왼 꼭짓점 ✅
    * → Position.Right = 시각적 오른 꼭짓점 ✅
    */
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;          /* clip-path와 border 혼용 불가 → box-shadow로 대체 */
+  border: none;
   cursor: default;
   transition: box-shadow 0.15s ease;
   position: relative;
@@ -120,7 +120,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 110px;
+  width: 128px;
+  max-height: 128px;
+  overflow: hidden;
   text-align: center;
 }
 
