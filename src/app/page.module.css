@@ -26,15 +26,32 @@
 
 /* ── 사이드패널 ────────────────────────────────────────────────────── */
 .sidebar {
-  width: var(--panel-width);
-  min-width: 170px;
-  max-width: 240px;
+  width: var(--panel-width);   /* 초기값 (JS에서 인라인 width로 덮어씀) */
+  min-width: 140px;
   background: var(--bg-panel);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   overflow: hidden;
+  position: relative;  /* 드래그 핸들 absolute 기준 */
+}
+
+/* 사이드바 우측 드래그 핸들 */
+.resizeHandle {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 10;
+  background: transparent;
+  transition: background 0.15s;
+}
+.resizeHandle:hover {
+  background: var(--accent);
+  opacity: 0.4;
 }
 
 /* 사이드바 헤더 */

@@ -6,7 +6,7 @@
  */
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   addEdge, useNodesState, useEdgesState,
   type Node, type Edge, type Connection,
@@ -48,6 +48,35 @@ export default function HomePage() {
   const [flowId, setFlowId]     = useState<string>("");
   const [title, setTitle]       = useState<string>("새 흐름도");
   const [editingTitle, setEditingTitle] = useState(false);
+
+  /* ── 사이드바 너비 드래그 조절 ──────────────────────────────────── */
+  const [sidebarWidth, setSidebarWidth] = useState(220);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartW = useRef(0);
+
+  const onDragHandleDown = useCallback((e: React.MouseEvent) => {
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragStartW.current = sidebarWidth;
+    e.preventDefault();
+  }, [sidebarWidth]);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!isDragging.current) return;
+      const delta = e.clientX - dragStartX.current;
+      /* 최소 140px, 최대 480px */
+      setSidebarWidth(Math.max(140, Math.min(480, dragStartW.current + delta)));
+    };
+    const onUp = () => { isDragging.current = false; };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+  }, []);
 
   /* ── 계층 데이터 상태 ─────────────────────────────────────────────── */
   const [allFlows,    setAllFlows]    = useState<FlowData[]>([]);
@@ -309,7 +338,7 @@ export default function HomePage() {
       <div className={styles.content}>
 
         {/* ════════ 사이드패널 ════════ */}
-        <aside className={styles.sidebar}>
+        <aside className={styles.sidebar} style={{ width: sidebarWidth }}>
           <div className={styles.sidebarHeader}>
             <span className={styles.appIcon}>⧡</span>
             <span className={styles.appTitle}>FlowTool</span>
@@ -348,6 +377,13 @@ export default function HomePage() {
           </div>
 
           <AuthBar />
+
+          {/* 사이드바 너비 드래그 핸들 — 오른쪽 가장자리에 배치 */}
+          <div
+            className={styles.resizeHandle}
+            onMouseDown={onDragHandleDown}
+            title="드래그하여 사이드바 너비 조절"
+          />
         </aside>
 
         {/* ════════ 메인 캔버스 ════════ */}
