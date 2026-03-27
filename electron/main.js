@@ -101,6 +101,14 @@ function createWindow() {
     mainWindow.loadURL(vercelUrl);
   });
 
+  /* ── DevTools 단축키 (Ctrl+Shift+I) ──────────────────────────── */
+  /* 콘솔에서 시드 스크립트 실행 등에 사용 */
+  mainWindow.webContents.on("before-input-event", (_e, input) => {
+    if (input.control && input.shift && input.key.toLowerCase() === "i") {
+      mainWindow.webContents.toggleDevTools();
+    }
+  });
+
   /* ── 창 위치/크기 자동 저장 ──────────────────────────────────── */
   /* 창 이동/리사이즈 완료 시 마다 저장 */
   const saveBounds = () => {
