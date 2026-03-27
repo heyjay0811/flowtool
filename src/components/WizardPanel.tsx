@@ -382,6 +382,56 @@ export default function WizardPanel({
         <p>💡 <strong>Delete</strong>: 삭제</p>
       </div>
 
+      {/* ── 숨겨진 파일 입력 (가져오기용) ──────────────────────── */}
+      <input
+        id="qb-import-file" type="file" accept=".json"
+        style={{ display: "none" }}
+        onChange={e => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = ev => {
+            try {
+              const d = JSON.parse(ev.target?.result as string) as {
+                projects?: unknown[]; categories?: unknown[]; flows?: unknown[];
+              };
+              const merge = (key: string, arr: unknown[] = []) => {
+                const cur = JSON.parse(localStorage.getItem(key) || "[]") as unknown[];
+                localStorage.setItem(key, JSON.stringify([...cur, ...arr]));
+              };
+              merge("flowtool_projects",   d.projects);
+              merge("flowtool_categories", d.categories);
+              merge("flowtool_flows",      d.flows);
+              alert(`✅ 가져오기 완료!\n프로젝트 ${d.projects?.length ?? 0}개 / 카테고리 ${d.categories?.length ?? 0}개 / 흐름도 ${d.flows?.length ?? 0}개`);
+              window.location.reload();
+            } catch { alert("❌ JSON 파싱 오류"); }
+          };
+          reader.readAsText(file);
+          e.target.value = "";
+        }}
+      />
+
+      {/* ── 5. 가져오기 / 내보내기 ───────────────────────────────── */}
+      <div className={styles.importExport}>
+        <button className={styles.importBtn}
+          onClick={() => document.getElementById("qb-import-file")?.click()}
+          title="JSON 파일에서 흐름도 가져오기">📂 가져오기</button>
+        <button className={styles.exportBtn}
+          onClick={() => {
+            const d = {
+              projects:   JSON.parse(localStorage.getItem("flowtool_projects")   || "[]"),
+              categories: JSON.parse(localStorage.getItem("flowtool_categories") || "[]"),
+              flows:      JSON.parse(localStorage.getItem("flowtool_flows")      || "[]"),
+              exportedAt: new Date().toISOString(),
+            };
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: "application/json" }));
+            a.download = `flowtool_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+          }}
+          title="전체 데이터를 JSON으로 내보내기">💾 내보내기</button>
+      </div>
+
     </div>
   );
 }
