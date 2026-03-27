@@ -85,19 +85,17 @@ function createWindow() {
     title: "FlowTool",
   });
 
-  /* ── URL 로드 (3단계 우선순위) ─────────────────────────────────
-   *   1순위: out/index.html 존재 → 로컬 정적 빌드
-   *   2순위: localhost:3001 응답 → 개발 서버
-   *   3순위: flowtool.vercel.app → 웹 배포판 (서버 없을 때 fallback)
+  /* ── URL 로드 ────────────────────────────────────────────────────
+   *   개발 모드: localhost:3001 서버가 실행 중이면 사용 (npm run dev)
+   *   일반 모드: flowtool.vercel.app (항상 최신 배포판)
+   *
+   *   주의: 구버전 out/index.html 정적 빌드는 더 이상 사용하지 않음.
+   *         앱이 Vercel 클라우드 기반으로 전환됐기 때문.
    */
-  if (isStaticBuild) {
-    mainWindow.loadFile(outIndexPath);
-  } else {
-    /* localhost:3001 접속 시도 후 실패하면 Vercel URL로 전환 */
-    mainWindow.loadURL("http://localhost:3001").catch(() => {
-      mainWindow.loadURL("https://flowtool.vercel.app");
-    });
-  }
+  mainWindow.loadURL("http://localhost:3001").catch(() => {
+    /* dev 서버 없음 → Vercel 배포판으로 자동 전환 */
+    mainWindow.loadURL("https://flowtool.vercel.app");
+  });
 
   /* ── 창 위치/크기 자동 저장 ──────────────────────────────────── */
   /* 창 이동/리사이즈 완료 시 마다 저장 */
