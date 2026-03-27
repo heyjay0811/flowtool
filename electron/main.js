@@ -78,8 +78,11 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
-      /* 영구 캐시 비활성화: 입새함 맄 항상 최신 웹 콘텐츠를 로드하기 위해 인메모리 전용 세션 사용 */
-      partition: "nopersist",
+      /* persist:flowtool — 영구 파티션 사용
+       * - localStorage 데이터가 앱 종료 후에도 보존됨
+       * - URL 타임스탬프로 HTTP 캐시만 무력화 (데이터는 유지)
+       * - 주의: 'nopersist' 사용 시 앱 종료 마다 모든 데이터 손실됨 */
+      partition: "persist:flowtool",
     },
 
     icon: path.join(__dirname, "../public/icons/icon.ico"),
