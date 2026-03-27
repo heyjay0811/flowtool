@@ -89,12 +89,15 @@ function createWindow() {
    *   개발 모드: localhost:3001 서버가 실행 중이면 사용 (npm run dev)
    *   일반 모드: flowtool.vercel.app (항상 최신 배포판)
    *
-   *   주의: 구버전 out/index.html 정적 빌드는 더 이상 사용하지 않음.
-   *         앱이 Vercel 클라우드 기반으로 전환됐기 때문.
+   *   캐시 초기화: 앱 실행 시마다 Electron Chromium 캐시를 지워서
+   *   구버전 캐시가 보이는 문제를 방지한다.
    */
-  mainWindow.loadURL("http://localhost:3001").catch(() => {
-    /* dev 서버 없음 → Vercel 배포판으로 자동 전환 */
-    mainWindow.loadURL("https://flowtool.vercel.app");
+  mainWindow.webContents.session.clearCache().then(() => {
+    /* 캐시 클리어 후 URL 로드 */
+    mainWindow.loadURL("http://localhost:3001").catch(() => {
+      /* dev 서버 없음 → Vercel 배포판으로 자동 전환 */
+      mainWindow.loadURL("https://flowtool.vercel.app");
+    });
   });
 
   /* ── 창 위치/크기 자동 저장 ──────────────────────────────────── */
