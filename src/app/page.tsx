@@ -155,6 +155,14 @@ export default function HomePage() {
     setNodes(nds => [...nds, newNode]);
   }, [nodes, setNodes]);
 
+  /* ── 빠른입력: 노드 + 엣지 동시 추가 (QuickBuilder용) ──────────── */
+  const handleAddNodes = useCallback((newNodes: Node[], newEdges: Edge[]) => {
+    /* 여러 노드를 한번에 캔버스에 추가 */
+    setNodes(nds => [...nds, ...newNodes]);
+    /* 노드 간 연결 엣지도 함께 추가 */
+    setEdges(eds => [...eds, ...newEdges]);
+  }, [setNodes, setEdges]);
+
   /* ── 연결점 노드 추가 ───────────────────────────────────────────── */
   const handleAddConnector = useCallback((linkedFlowId: string, linkedFlowTitle: string) => {
     const newNode: Node = {
@@ -320,6 +328,7 @@ export default function HomePage() {
               nodes={nodes}
               onAddNode={handleAddNode}
               onDeleteNode={handleDeleteNode}
+              onAddNodes={handleAddNodes}
               projects={projects}
               categories={categories}
               allFlows={allFlows}
